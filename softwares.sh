@@ -62,6 +62,17 @@ else
     log "Packer is already installed."
 fi
 
+## --- HashiCorp Vault ---
+if ! command -v vault &> /dev/null; then
+    log "Installing HashiCorp Vault..."
+    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    yum -y install vault
+    systemctl enable vault
+    systemctl start vault
+else 
+    log "HashiCorp Vault is already installed."
+fi
+
 # --- Docker Setup ---
 if ! command -v docker &> /dev/null; then
     log "Installing Docker..."
