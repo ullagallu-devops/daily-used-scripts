@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to list EC2 instances, choose by number, and delete with confirmation
+# Script to list EC2 instances, choose by number, and stop with confirmation
 
 # Ensure AWS CLI is configured
 if ! aws sts get-caller-identity > /dev/null 2>&1; then
@@ -31,7 +31,7 @@ for i in "${!INSTANCE_ARRAY[@]}"; do
 done
 
 # Ask user to choose an instance by number
-read -p "Enter the number of the instance you want to delete: " INSTANCE_NUMBER
+read -p "Enter the number of the instance you want to stop: " INSTANCE_NUMBER
 
 # Validate the selection
 if ! [[ "$INSTANCE_NUMBER" =~ ^[0-9]+$ ]] || [ "$INSTANCE_NUMBER" -lt 1 ] || [ "$INSTANCE_NUMBER" -gt "${#INSTANCE_ARRAY[@]}" ]; then
@@ -44,129 +44,21 @@ SELECTED_INSTANCE="${INSTANCE_ARRAY[$((INSTANCE_NUMBER-1))]}"
 INSTANCE_ID=$(echo "$SELECTED_INSTANCE" | awk '{print $1}')
 INSTANCE_NAME=$(echo "$SELECTED_INSTANCE" | awk '{print $2}')
 
-# Confirm deletion
-read -p "Are you sure you want to terminate the instance '$INSTANCE_NAME' (ID: $INSTANCE_ID)? (y/n): " CONFIRM
+# Confirm stopping
+read -p "Are you sure you want to stop the instance '$INSTANCE_NAME' (ID: $INSTANCE_ID)? (y/n): " CONFIRM
 
 if [ "$CONFIRM" != "y" ]; then
-  echo "Termination cancelled."
+  echo "Stopping cancelled."
   exit 0
 fi
 
-# Terminate the instance
-echo "Terminating instance $INSTANCE_ID..."
-aws ec2 terminate-instances --instance-ids "$INSTANCE_ID" > /dev/null
+# Stop the instance
+echo "Stopping instance $INSTANCE_ID..."
+aws ec2 stop-instances --instance-ids "$INSTANCE_ID" > /dev/null
 
-# Wait for the instance to terminate
-echo "Waiting for instance $INSTANCE_ID to terminate..."
-aws ec2 wait instance-terminated --instance-ids "$INSTANCE_ID"
+# Wait for the instance to stop
+echo "Waiting for instance $INSTANCE_ID to stop..."
+aws ec2 wait instance-stopped --instance-ids "$INSTANCE_ID"
 
 # Final confirmation
-echo "Instance $INSTANCE_ID has been successfully terminated."
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #!/bin/bash
-
-# # Script to list EC2 instances, choose by name, and delete
-
-# # Ensure AWS CLI is configured
-# if ! aws sts get-caller-identity > /dev/null 2>&1; then
-#   echo "AWS CLI is not configured. Please run 'aws configure' first."
-#   exit 1
-# fi
-
-# # List all EC2 instances with their names and IDs
-# echo "Fetching EC2 instances..."
-# aws ec2 describe-instances \
-#   --query "Reservations[*].Instances[*].[InstanceId, Tags[?Key=='Name'].Value | [0], State.Name]" \
-#   --output table
-
-# # Prompt user to enter the EC2 instance name
-# read -p "Enter the EC2 Instance Name you want to delete: " INSTANCE_NAME
-
-# # Get the instance ID based on the instance name
-# INSTANCE_ID=$(aws ec2 describe-instances \
-#   --filters "Name=tag:Name,Values=$INSTANCE_NAME" \
-#   --query "Reservations[*].Instances[*].InstanceId" \
-#   --output text)
-
-# # Check if INSTANCE_ID is found
-# if [ -z "$INSTANCE_ID" ]; then
-#   echo "No instance found with the name '$INSTANCE_NAME'. Exiting."
-#   exit 1
-# fi
-
-# # Confirm deletion
-# read -p "Are you sure you want to terminate the instance '$INSTANCE_NAME' (ID: $INSTANCE_ID)? (yes/no): " CONFIRM
-
-# if [ "$CONFIRM" != "yes" ]; then
-#   echo "Termination cancelled."
-#   exit 0
-# fi
-
-# # Terminate the instance
-# echo "Terminating instance $INSTANCE_ID..."
-# aws ec2 terminate-instances --instance-ids "$INSTANCE_ID"
-
-# echo "Termination command sent. It may take a few minutes for the instance to be fully terminated."
+echo "Instance $INSTANCE_ID has been successfully stopped."
