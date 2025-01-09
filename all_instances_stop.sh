@@ -45,9 +45,9 @@ INSTANCE_ID=$(echo "$SELECTED_INSTANCE" | awk '{print $1}')
 INSTANCE_NAME=$(echo "$SELECTED_INSTANCE" | awk '{print $2}')
 
 # Confirm deletion
-read -p "Are you sure you want to terminate the instance '$INSTANCE_NAME' (ID: $INSTANCE_ID)? (yes/no): " CONFIRM
+read -p "Are you sure you want to terminate the instance '$INSTANCE_NAME' (ID: $INSTANCE_ID)? (y/n): " CONFIRM
 
-if [ "$CONFIRM" != "yes" ]; then
+if [ "$CONFIRM" != "y" ]; then
   echo "Termination cancelled."
   exit 0
 fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 HOSTED_ZONE_ID="Z04410211MZ57SQOXFNI3"
-INSTANCE_ID="i-0109085075a2bc14f"
+INSTANCE_ID="i-0dff066de0912904f"
 DNS_NAME="ws.bapatlas.site"
 read -p "Please Enter Desired Instance Type: " NEW_INSTANCE_TYPE
 
