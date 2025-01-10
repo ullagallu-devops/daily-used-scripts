@@ -51,3 +51,4 @@ fi
 echo "Verifying DNS record..."
 updated_record=$(aws route53 list-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --query "ResourceRecordSets[?Type == 'A' && Name == '$DNS_NAME.'].[Name, ResourceRecords[0].Value]" --output text)
 echo "Updated record: $updated_record"
+
