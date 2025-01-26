@@ -1,7 +1,8 @@
 #!/bin/bash
 
 HOSTED_ZONE_ID="Z04410211MZ57SQOXFNI3"  
-RECORD_NAME="docker.bapatlas.site"   
+RECORD_NAME="docker.bapatlas.site"
+
 
 # Step 1: Prompt for the instance type
 echo "Please enter the instance type (e.g., t3a.medium, t3.medium.......): "
@@ -14,6 +15,10 @@ read INSTANCE_TAG
 # Step 3: Prompt for the instance market choice (Spot or On-Demand)
 echo "Do you want to launch a Spot instance or an On-Demand instance? (Enter 'spot' or 'on-demand')"
 read INSTANCE_TYPE_CHOICE
+
+# Step 4: Prompt for the region
+echo "Please enter the region (e.g., us-east-1, ap-south-1.......): "
+read REGION
 
 # Validate input for instance type choice
 if [[ "$INSTANCE_TYPE_CHOICE" != "spot" && "$INSTANCE_TYPE_CHOICE" != "on-demand" ]]; then
@@ -37,7 +42,7 @@ fi
 # Step 4: Retrieve the latest Amazon Linux 2023 AMI ID
 AMI_ID=$(aws ec2 describe-images \
     --owners "amazon" \
-    --region ap-south-1 \
+    --region "$REGION" \
     --filters "Name=name,Values=al2023-ami-2023*" "Name=state,Values=available" "Name=architecture,Values=x86_64" \
     --query "Images | sort_by(@, &CreationDate)[-1].ImageId" \
     --output text)
