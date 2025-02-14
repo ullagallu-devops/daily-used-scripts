@@ -44,34 +44,34 @@ for package in "${PACKAGES[@]}"; do
     fi
 done
 
-# --- Terraform Setup ---
-if ! command -v terraform &> /dev/null; then
-    log "Installing Terraform..."
-    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    yum -y install terraform
-else
-    log "Terraform is already installed."
-fi
+# # --- Terraform Setup ---
+# if ! command -v terraform &> /dev/null; then
+#     log "Installing Terraform..."
+#     yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+#     yum -y install terraform
+# else
+#     log "Terraform is already installed."
+# fi
 
-# --- Packer Setup ---
-if ! command -v packer &> /dev/null; then
-    log "Installing Packer..."
-    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    yum -y install packer
-else
-    log "Packer is already installed."
-fi
+# # --- Packer Setup ---
+# if ! command -v packer &> /dev/null; then
+#     log "Installing Packer..."
+#     yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+#     yum -y install packer
+# else
+#     log "Packer is already installed."
+# fi
 
 ## --- HashiCorp Vault ---
-if ! command -v vault &> /dev/null; then
-    log "Installing HashiCorp Vault..."
-    yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    yum -y install vault
-    systemctl enable vault
-    systemctl start vault
-else 
-    log "HashiCorp Vault is already installed."
-fi
+# if ! command -v vault &> /dev/null; then
+#     log "Installing HashiCorp Vault..."
+#     yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+#     yum -y install vault
+#     systemctl enable vault
+#     systemctl start vault
+# else 
+#     log "HashiCorp Vault is already installed."
+# fi
 
 # --- Docker Setup ---
 if ! command -v docker &> /dev/null; then
@@ -118,12 +118,12 @@ if ! command -v pip &> /dev/null; then
     ln -sf ~/.local/bin/pip /usr/local/bin/pip
 fi
 
-# --- Ansible ---
-if ! command -v ansible &> /dev/null; then
-    log "Installing Ansible..."
-    python3 -m pip install --user ansible
-    ln -sf ~/.local/bin/ansible /usr/local/bin/ansible
-fi
+# # --- Ansible ---
+# if ! command -v ansible &> /dev/null; then
+#     log "Installing Ansible..."
+#     python3 -m pip install --user ansible
+#     ln -sf ~/.local/bin/ansible /usr/local/bin/ansible
+# fi
 
 # --- NodeJS ---
 if ! command -v node &> /dev/null; then
@@ -148,44 +148,44 @@ if ! command -v mvn &> /dev/null; then
 fi
 
 # --- Jenkins ---
-if ! systemctl is-active --quiet jenkins; then
-    log "Installing Jenkins..."
-    wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-    rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-    yum install jenkins -y
-    systemctl enable jenkins
-    systemctl start jenkins
-fi
-systemctl status jenkins --no-pager
+# if ! systemctl is-active --quiet jenkins; then
+#     log "Installing Jenkins..."
+#     wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+#     rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+#     yum install jenkins -y
+#     systemctl enable jenkins
+#     systemctl start jenkins
+# fi
+# systemctl status jenkins --no-pager
 
 # --- kubectl ---
-if ! command -v kubectl &> /dev/null; then
-    log "Installing kubectl..."
-    curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.2/2024-11-15/bin/linux/amd64/kubectl
-    chmod +x kubectl
-    mv kubectl /usr/local/bin/
-fi
+# if ! command -v kubectl &> /dev/null; then
+#     log "Installing kubectl..."
+#     curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.2/2024-11-15/bin/linux/amd64/kubectl
+#     chmod +x kubectl
+#     mv kubectl /usr/local/bin/
+# fi
 
 # --- k9s ---
-if ! command -v k9s &> /dev/null; then
-    log "Installing k9s..."
-    curl -sS https://webinstall.dev/k9s | bash
-    ln -sf ~/.local/bin/k9s /usr/local/bin/k9s
-fi
+# if ! command -v k9s &> /dev/null; then
+#     log "Installing k9s..."
+#     curl -sS https://webinstall.dev/k9s | bash
+#     ln -sf ~/.local/bin/k9s /usr/local/bin/k9s
+# fi
 
 # --- tfsec ---
-if ! command -v tfsec &> /dev/null; then
-    log "Installing tfsec..."
-    wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.28.11/tfsec-linux-amd64 -O tfsec
-    chmod +x tfsec
-    mv tfsec /usr/local/bin/
-fi
+# if ! command -v tfsec &> /dev/null; then
+#     log "Installing tfsec..."
+#     wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.28.11/tfsec-linux-amd64 -O tfsec
+#     chmod +x tfsec
+#     mv tfsec /usr/local/bin/
+# fi
 
-if ! command -v kubectx &> /dev/null; then
-    log "Installing kubectx and kubens..."
-    git clone https://github.com/ahmetb/kubectx /opt/kubectx
-    ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
-    ln -s /opt/kubectx/kubens /usr/local/bin/kubens
-else
-    log "kubectx and kubens are already installed."
-fi
+# if ! command -v kubectx &> /dev/null; then
+#     log "Installing kubectx and kubens..."
+#     git clone https://github.com/ahmetb/kubectx /opt/kubectx
+#     ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+#     ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+# else
+#     log "kubectx and kubens are already installed."
+# fi
