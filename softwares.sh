@@ -33,7 +33,7 @@ log "Updating system packages..."
 dnf update -y
 
 # --- Install Required Packages ---
-PACKAGES=("git" "docker" "tmux" "tree" "perl" "libicu")
+PACKAGES=("git" "tmux" "tree")
 
 for package in "${PACKAGES[@]}"; do
     if ! rpm -q "$package" &>/dev/null; then
@@ -74,24 +74,24 @@ done
 # fi
 
 # --- Docker Setup ---
-if ! command -v docker &> /dev/null; then
-    log "Installing Docker..."
-    dnf install -y docker
-    systemctl start docker
-    systemctl enable docker
-    usermod -aG docker ec2-user
-else
-    log "Docker is already installed."
-fi
+# if ! command -v docker &> /dev/null; then
+#     log "Installing Docker..."
+#     dnf install -y docker
+#     systemctl start docker
+#     systemctl enable docker
+#     usermod -aG docker ec2-user
+# else
+#     log "Docker is already installed."
+# fi
 
-# --- Docker Compose Setup ---
-if ! command -v docker-compose &> /dev/null; then
-    log "Installing Docker Compose..."
-    curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-else
-    log "Docker Compose is already installed."
-fi
+# # --- Docker Compose Setup ---
+# if ! command -v docker-compose &> /dev/null; then
+#     log "Installing Docker Compose..."
+#     curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#     chmod +x /usr/local/bin/docker-compose
+# else
+#     log "Docker Compose is already installed."
+# fi
 
 # --- Add Current User to Docker Group ---
 if ! groups ec2-user | grep -q '\bdocker\b'; then
