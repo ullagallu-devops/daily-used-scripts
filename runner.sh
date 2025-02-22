@@ -28,7 +28,7 @@ else
 fi
 
 # Start EC2 instance for WorkStation
-echo "Starting EC2 instance for WorkStation..."
+echo "Starting EC2 instance for runner..."
 aws ec2 start-instances --instance-ids $INSTANCE_ID
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
