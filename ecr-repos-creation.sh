@@ -2,7 +2,7 @@
 
 # List of repository names
 PROJECT_NAME=instana
-REPOS=("cart" "user" "shipping" "payment" "frontend" "mongo" "mysql" "rabbit")
+REPOS=("catalogue" "cart" "user" "shipping" "payment" "frontend" "mongo" "mysql" "rabbit")
 
 # Loop through each repo name and create it in ECR
 for REPO in "${REPOS[@]}"; do
