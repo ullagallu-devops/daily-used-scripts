@@ -65,7 +65,7 @@ if [ "$INSTANCE_ID" == "None" ] || [ -z "$INSTANCE_ID" ]; then
   INSTANCE_ID=$(aws ec2 run-instances \
     --image-id "$AMI_ID" \
     --instance-type "$INSTANCE_TYPE" \
-    --key-name bapatlas.site \
+    --key-name siva \
     --user-data file://docker-installation.sh \
     $INSTANCE_MARKET_OPTIONS \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_TAG}]" \
